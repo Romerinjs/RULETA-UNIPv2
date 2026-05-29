@@ -28,7 +28,11 @@ export async function POST(request: Request) {
 
     const actualizado = await prisma.estudiante.update({
       where: { boleta },
-      data: { telefono }
+      data: {
+        telefono,
+        asistencia: false,
+        ganador: false,
+      }
     });
 
     return NextResponse.json({ success: true, estudiante: actualizado });
