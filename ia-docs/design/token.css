@@ -1,0 +1,84 @@
+/* ─────────────────────────────────────────────────────────────────────────
+ * design-systems/uniputumayo/tokens.css
+ *
+ * Structured design variables for UNIPUTUMAYO.
+ * Based on the institutional visual identity manual:
+ *   - White canvas (#ffffff) is essential to highlight the colors.
+ *   - Blue (#18668F) as the pillar of seriousness and trust.
+ *   - Green (#80BF1F) and Orange (#F5A51D) for dynamism and natural connection.
+ *   - Corporate grayscale for optimal readability.
+ * ─────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* ─── Surfaces ──────────────────────────────────────────────────── */
+  --bg: #ffffff;             /* Official main background */
+  --surface: #f4f5f7;        /* Secondary surface / breathing areas */
+  
+  /* ─── Primary Chromatic Identity ────────────────────────────────── */
+  --brand-blue: #18668F;     /* Institutional, trust */ /*[cite: 1] */
+  --brand-green: #80BF1F;    /* Nature, growth */ /*[cite: 1] */
+  --brand-orange: #F5A51D;   /* Energy, digital environment */ /*[cite: 1] */
+  
+  /* Interactive states */
+  --brand-blue-hover: #125174;
+  --brand-blue-ghost: rgba(24, 102, 143, 0.08);
+
+  /* ─── Text and Ink (Based on institutional grayscale) ───────────── */
+  --fg-dark: #000000;        /* Absolute black for extreme contrast */ /*[cite: 1] */
+  --fg-main: #595957;        /* Primary institutional gray for text */ /*[cite: 1] */
+  --fg-muted: #B2B6B9;       /* Secondary gray for metadata / borders */ /*[cite: 1] */
+  --text-on-color: #ffffff;  /* Text on corporate backgrounds */
+
+  /* ─── Borders ───────────────────────────────────────────────────── */
+  --border-light: #e1e3e6;
+  --border-strong: var(--fg-muted);
+
+  /* ─── Typography ────────────────────────────────────────────────── */
+  --font-display: "Heavitas", "Raleway", system-ui, sans-serif; /*[cite: 1] */
+  --font-body: "Fira Sans", "Roboto", system-ui, sans-serif; /*[cite: 1] */
+
+  /* Typographic scale */
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+  --text-2xl: 36px;
+  --text-3xl: 56px;
+
+  --leading-body: 1.55;
+  --leading-tight: 1.2;
+
+  /* ─── Spacing (4px Base System) ─────────────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Section rhythm */
+  --section-y-desktop: 80px;
+  --section-y-tablet: 56px;
+
+  /* ─── Border Radii ──────────────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 8px;          /* Corporate standard for cards and buttons */
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  /* ─── Elevation and Shadows ─────────────────────────────────────── */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 24px rgba(24, 102, 143, 0.1);
+  --focus-ring: 0 0 0 3px rgba(24, 102, 143, 0.25);
+
+  /* ─── Animation ─────────────────────────────────────────────────── */
+  --motion-fast: 200ms;
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+
+  /* ─── Container ─────────────────────────────────────────────────── */
+  --container-max: 1200px;
+  --container-gutter: 24px;
+}

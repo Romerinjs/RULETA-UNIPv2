@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model Estudiante {
+  id        String  @id @default(uuid())
+  nombre    String
+  documento String  @unique
+  boleta    String  @unique
+  telefono  String? // Opcional en la fase de carga, obligatorio en activación
+
+  asistencia Boolean @default(false)
+  ganador    Boolean @default(false)
+
+  programaId Int
+  programa   Programa @relation(fields: [programaId], references: [id])
+  semestreId Int
+  semestre   Semestre @relation(fields: [semestreId], references: [id])
+  grupoId    Int
+  grupo      Grupo    @relation(fields: [grupoId], references: [id])
+
+  // Índice compuesto crítico para la ruleta
+  @@index([asistencia, ganador])
+}
+
+model Programa {
+  id          Int          @id @default(autoincrement())
+  nombre      String       @unique
+  estudiantes Estudiante[]
+}
+
+model Semestre {
+  id          Int          @id @default(autoincrement())
+  numero      Int          @unique
+  estudiantes Estudiante[]
+}
+
+model Grupo {
+  id          Int          @id @default(autoincrement())
+  nombre      String       @unique
+  estudiantes Estudiante[]
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  nombre   String
+  email    String @unique
+  password String
+}

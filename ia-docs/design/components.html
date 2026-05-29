@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UNIPUTUMAYO — Reference Components</title> <!--[cite: 1] -->
+    <style>
+      /* Variables logically imported from tokens.css */
+      :root {
+        --bg: #ffffff;
+        --surface: #f4f5f7;
+        --brand-blue: #18668F; /*[cite: 1] */
+        --brand-green: #80BF1F; /*[cite: 1] */
+        --brand-orange: #F5A51D; /*[cite: 1] */
+        --brand-blue-hover: #125174;
+        --brand-blue-ghost: rgba(24, 102, 143, 0.08);
+        --fg-dark: #000000; /*[cite: 1] */
+        --fg-main: #595957; /*[cite: 1] */
+        --fg-muted: #B2B6B9; /*[cite: 1] */
+        --border-light: #e1e3e6;
+        --font-display: "Raleway", "Heavitas", sans-serif; /*[cite: 1] */
+        --font-body: "Fira Sans", "Roboto", sans-serif; /*[cite: 1] */
+        --text-xs: 11px;
+        --text-sm: 13px;
+        --text-base: 15px;
+        --text-lg: 18px;
+        --text-xl: 24px;
+        --text-2xl: 36px;
+        --text-3xl: 56px;
+        --space-2: 8px;
+        --space-3: 12px;
+        --space-4: 16px;
+        --space-6: 24px;
+        --space-8: 32px;
+        --space-12: 48px;
+        --radius-md: 8px;
+        --radius-pill: 9999px;
+      }
+
+      /* Reset & Base */
+      *, *::before, *::after { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg-main);
+        font-family: var(--font-body);
+        font-size: var(--text-base);
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-6); }
+      section { padding: 80px 0; border-bottom: 1px solid var(--border-light); }
+
+      /* Typography */
+      h1, h2, h3 { font-family: var(--font-display); color: var(--fg-dark); margin: 0; line-height: 1.2; }
+      h1 { font-size: var(--text-3xl); font-weight: 800; letter-spacing: -1px; color: var(--brand-blue); }
+      h2 { font-size: var(--text-2xl); font-weight: 700; }
+      h3 { font-size: var(--text-lg); font-weight: 700; }
+      p { margin: 0; }
+      .lead { font-size: var(--text-lg); color: var(--fg-main); }
+      .text-sm { font-size: var(--text-sm); color: var(--fg-muted); }
+      .eyebrow { font-size: var(--text-xs); font-weight: 700; color: var(--brand-orange); text-transform: uppercase; letter-spacing: 1px; }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center;
+        padding: 12px 24px; border-radius: var(--radius-md);
+        font-family: var(--font-body); font-weight: 600; font-size: var(--text-base);
+        text-decoration: none; cursor: pointer; border: 1px solid transparent;
+        transition: all 200ms ease;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--brand-blue), var(--brand-orange));
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(24, 102, 143, 0.2);
+      }
+      .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(245, 165, 29, 0.3); }
+      
+      .btn-outline {
+        background: transparent; color: var(--brand-blue); border-color: var(--brand-blue);
+      }
+      .btn-outline:hover { background: var(--brand-blue-ghost); }
+
+      /* Institutional Cards */
+      .card {
+        background: var(--bg); border: 1px solid var(--border-light);
+        border-radius: var(--radius-md); padding: var(--space-6);
+        display: flex; flex-direction: column; gap: var(--space-3);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        transition: transform 200ms ease, box-shadow 200ms ease;
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(24, 102, 143, 0.1);
+        border-color: var(--brand-blue);
+      }
+      .card-image-placeholder {
+        height: 160px; border-radius: 4px; background: var(--surface);
+        margin-bottom: var(--space-2);
+      }
+      .bg-green-gradient { background: linear-gradient(135deg, var(--brand-green), #5c8f12); }
+      .bg-blue-gradient { background: linear-gradient(135deg, var(--brand-blue), #125174); }
+
+      /* Chips / Tags */
+      .chip {
+        display: inline-block; padding: 4px 12px; border-radius: var(--radius-pill);
+        font-size: var(--text-xs); font-weight: 700; text-transform: uppercase;
+      }
+      .chip-green { background: rgba(128, 191, 31, 0.15); color: #5c8f12; }
+      .chip-orange { background: rgba(245, 165, 29, 0.15); color: #c48011; }
+
+      /* Layouts */
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: center; }
+      .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-top: var(--space-8); }
+      .stack { display: flex; flex-direction: column; gap: var(--space-4); }
+      .row { display: flex; gap: var(--space-3); }
+
+      @media (max-width: 900px) {
+        .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        h1 { font-size: var(--text-2xl); }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      
+      <!-- Institutional Hero Section -->
+      <section>
+        <div class="grid-2">
+          <div class="stack">
+            <p class="eyebrow">INSTITUCIÓN UNIVERSITARIA DEL PUTUMAYO</p> <!--[cite: 1] -->
+            <h1>Integral training for the Amazon and the country.</h1>
+            <p class="lead">
+              Committed to sustainable development, biological, and cultural diversity. 
+              High-quality public higher education that is investigative and inclusive.
+            </p>
+            <div class="row" style="margin-top: var(--space-2);">
+              <a href="#" class="btn btn-primary">Open Enrollment</a>
+              <a href="#" class="btn btn-outline">Academic Offer</a>
+            </div>
+          </div>
+          <div style="background: var(--surface); padding: var(--space-6); border-radius: var(--radius-md); border-left: 4px solid var(--brand-orange);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <h3 style="color: var(--brand-blue);">Admission Process 2025</h3>
+              <span class="chip chip-orange">VIGILADA MINEDUCACIÓN</span> <!--[cite: 1] -->
+            </div>
+            <p class="text-sm">Start your professional training with high-quality accredited programs capable of responding to the requirements of the region's socio-economic environment.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Offer / Cards Section -->
+      <section>
+        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+          <p class="eyebrow">Featured Programs</p>
+          <h2>Build the future from your territory</h2>
+        </div>
+
+        <div class="grid-3">
+          <!-- Card 1 -->
+          <article class="card">
+            <div class="card-image-placeholder bg-green-gradient"></div>
+            <div><span class="chip chip-green">Sustainability</span></div>
+            <h3>Environmental Sciences</h3>
+            <p class="text-sm">Promotes respect for biodiversity and manages ecosystem resources to ensure balanced Andean-Amazonian development.</p>
+            <a href="#" style="color: var(--brand-blue); font-weight: 700; text-decoration: none; margin-top: auto;">View curriculum &rarr;</a>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card">
+            <div class="card-image-placeholder bg-blue-gradient"></div>
+            <div><span class="chip chip-orange">Innovation</span></div>
+            <h3>Engineering and Technology</h3>
+            <p class="text-sm">Train with critical thinking, methodological rigor, and knowledge application strategies to solve problems in the region.</p>
+            <a href="#" style="color: var(--brand-blue); font-weight: 700; text-decoration: none; margin-top: auto;">View curriculum &rarr;</a>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card">
+            <div class="card-image-placeholder" style="background: var(--fg-muted);"></div>
+            <div><span class="chip chip-green">Social</span></div>
+            <h3>Administrative Sciences</h3>
+            <p class="text-sm">Leadership and responsibility for decision-making. Social capabilities integrated into the regional and global productive sectors.</p>
+            <a href="#" style="color: var(--brand-blue); font-weight: 700; text-decoration: none; margin-top: auto;">View curriculum &rarr;</a>
+          </article>
+        </div>
+      </section>
+
+    </main>
+  </body>
+</html>
