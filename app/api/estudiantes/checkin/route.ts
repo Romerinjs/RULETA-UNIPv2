@@ -4,40 +4,87 @@ import prisma from '@/lib/prisma';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { boleta, telefono } = body;
+    const { boleta } = body;
 
     if (!boleta || boleta.length !== 4) {
       return NextResponse.json({ error: 'Boleta inválida. Debe tener 4 dígitos.' }, { status: 400 });
     }
 
+    // Buscar estudiante utilizando el índice @unique en 'boleta'
     const estudiante = await prisma.estudiante.findUnique({
-      where: { boleta }
+      where: { boleta },
+      select: {
+        nombre: true,
+        documento: true,
+        telefono: true,
+        asistencia: true,
+        programa: {
+          select: {
+            nombre: true,
+          },
+        },
+        semestre: {
+          select: {
+            numero: true,
+          },
+        },
+        grupo: {
+          select: {
+            nombre: true,
+          },
+        },
+      }
     });
 
     if (!estudiante) {
       return NextResponse.json({ error: 'Boleta no encontrada' }, { status: 404 });
     }
 
-    if (estudiante.asistencia) {
-      return NextResponse.json({ success: true, message: 'El estudiante ya registró asistencia.', estudiante });
-    }
-
-    // Fallback: si no completó la etapa 2 y no mandó el teléfono en este request
-    if (estudiante.telefono === null && !telefono) {
+    // Pre-requisito obligatorio: Debe estar activado (tener teléfono registrado)
+    if (estudiante.telefono === null) {
       return NextResponse.json(
-        { error: 'Debe proporcionar un número de teléfono (precondition required).' },
+        { error: 'Primero debes activar tu boleta en /activar' },
         { status: 428 }
       );
     }
 
-    const dataToUpdate: { asistencia: boolean; telefono?: string } = { asistencia: true };
-    if (telefono && estudiante.telefono === null) {
-      dataToUpdate.telefono = telefono;
+    // Si ya registró asistencia, retornamos un éxito informativo con estado 200
+    if (estudiante.asistencia) {
+      return NextResponse.json({
+        success: true,
+        yaRegistrado: true,
+        message: 'El estudiante ya registró asistencia.',
+        estudiante
+      });
     }
 
+    // Registrar asistencia física utilizando el índice @unique en 'boleta'
     const actualizado = await prisma.estudiante.update({
       where: { boleta },
-      data: dataToUpdate
+      data: {
+        asistencia: true
+      },
+      select: {
+        nombre: true,
+        documento: true,
+        telefono: true,
+        asistencia: true,
+        programa: {
+          select: {
+            nombre: true,
+          },
+        },
+        semestre: {
+          select: {
+            numero: true,
+          },
+        },
+        grupo: {
+          select: {
+            nombre: true,
+          },
+        },
+      }
     });
 
     return NextResponse.json({ success: true, estudiante: actualizado });

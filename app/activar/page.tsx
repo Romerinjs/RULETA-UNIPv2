@@ -35,7 +35,7 @@ export default function ActivarBoletaPage() {
   useEffect(() => {
     const lookupBoleta = async () => {
       const boletaCode = boleta.trim().toUpperCase();
-      
+
       if (boletaCode.length < 4) {
         // Reset states if user deletes characters
         setNombre("");
@@ -60,10 +60,10 @@ export default function ActivarBoletaPage() {
 
       try {
         const response = await fetch(`/api/estudiantes/${boletaCode}`);
-        
+
         if (response.ok) {
           const data: EstudianteData = await response.json();
-          
+
           setNombre(data.nombre);
           setDocumento(data.documento);
           setStudentFound(true);
@@ -99,7 +99,7 @@ export default function ActivarBoletaPage() {
   // Handle phone changes (filtering letters, allowing only numbers)
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    
+
     // Strip out all non-digits. Enforce 10-digit limit.
     const digitsOnly = value.replace(/\D/g, "").slice(0, 10);
     setTelefono(digitsOnly);
@@ -183,7 +183,8 @@ export default function ActivarBoletaPage() {
   return (
     <div className="flex-1 bg-subtle min-h-screen flex flex-col justify-between py-6 px-4 font-sans select-none antialiased">
       {/* Dynamic animations injection */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes scaleIn {
           0% { transform: scale(0.9); opacity: 0; }
           100% { transform: scale(1); opacity: 1; }
@@ -234,7 +235,7 @@ export default function ActivarBoletaPage() {
       {/* Main content container */}
       <main className="w-full max-w-md mx-auto flex-1 flex flex-col justify-center my-6">
         <div className="bg-canvas border border-border-default rounded-xl shadow-[0_4px_20px_rgba(24,102,143,0.06)] p-6 md:p-8 flex flex-col transition-all duration-300">
-          
+
           {/* Section title */}
           <div className="mb-6 text-center">
             <h1 className="font-heading text-[22px] font-bold text-ink-dark leading-tight">
@@ -254,11 +255,16 @@ export default function ActivarBoletaPage() {
               <div className="relative">
                 <input
                   id="boleta"
-                  type="text"
+                  type="number"
+                  onKeyDown={(e) => {
+                    if (['e', 'E', '+', '-'].includes(e.key)) {
+                      e.preventDefault();
+                    }
+                  }}
                   maxLength={4}
                   value={boleta}
-                  onChange={(e) => setBoleta(e.target.value.toUpperCase())}
-                  placeholder="Ej: A1B2"
+                  onChange={(e) => setBoleta(e.target.value)}
+                  placeholder="Ej: 1234"
                   disabled={submitting}
                   className="w-full py-3 pl-4 pr-10 border border-border-default rounded-lg font-mono text-[16px] font-bold tracking-wider text-ink-dark placeholder-ink-secondary/70 focus:outline-none focus:border-blue-primary focus:ring-[3px] focus:ring-blue-primary/20 transition-all uppercase"
                   required
@@ -292,13 +298,12 @@ export default function ActivarBoletaPage() {
                   Estudiante verificado en base de datos.
                 </div>
               )}
-              
+
               {errorMsg && (
-                <div className={`p-3 rounded-lg border text-[13px] leading-relaxed flex items-start gap-2 ${
-                  alreadyActivated 
-                    ? "bg-amber-50 border-amber-200 text-amber-800" 
-                    : "bg-red-50 border-red-200 text-red-700"
-                }`}>
+                <div className={`p-3 rounded-lg border text-[13px] leading-relaxed flex items-start gap-2 ${alreadyActivated
+                  ? "bg-amber-50 border-amber-200 text-amber-800"
+                  : "bg-red-50 border-red-200 text-red-700"
+                  }`}>
                   <span className="text-[15px] leading-none mt-0.5">{alreadyActivated ? "⚠️" : "❌"}</span>
                   <div>
                     <span className="font-semibold block">{alreadyActivated ? "Boleta Activada" : "Error de Boleta"}</span>
@@ -358,7 +363,6 @@ export default function ActivarBoletaPage() {
                 <label htmlFor="telefono" className="text-[13px] font-semibold text-ink-dark">
                   Teléfono de Contacto <span className="text-red-500">*</span>
                 </label>
-                <span className="text-[11px] text-ink-secondary">10 dígitos (inicia con 3)</span>
               </div>
               <div className="relative">
                 <input
@@ -371,15 +375,14 @@ export default function ActivarBoletaPage() {
                   onChange={handlePhoneChange}
                   disabled={!studentFound || alreadyActivated || submitting}
                   placeholder={studentFound && !alreadyActivated ? "Ej: 3001234567" : "Primero verifique su boleta"}
-                  className={`w-full py-3 pl-4 pr-10 border rounded-lg font-sans text-[15px] focus:outline-none transition-all ${
-                    !studentFound || alreadyActivated
-                      ? "bg-subtle/40 border-border-default cursor-not-allowed placeholder-ink-secondary/50"
-                      : phoneError
+                  className={`w-full py-3 pl-4 pr-10 border rounded-lg font-sans text-[15px] focus:outline-none transition-all ${!studentFound || alreadyActivated
+                    ? "bg-subtle/40 border-border-default cursor-not-allowed placeholder-ink-secondary/50"
+                    : phoneError
                       ? "border-red-300 focus:border-red-500 focus:ring-[3px] focus:ring-red-500/10"
                       : telefono.length === 10
-                      ? "border-green-nature focus:border-green-nature focus:ring-[3px] focus:ring-green-nature/10"
-                      : "border-border-default focus:border-blue-primary focus:ring-[3px] focus:ring-blue-primary/20"
-                  }`}
+                        ? "border-green-nature focus:border-green-nature focus:ring-[3px] focus:ring-green-nature/10"
+                        : "border-border-default focus:border-blue-primary focus:ring-[3px] focus:ring-blue-primary/20"
+                    }`}
                   required
                 />
                 <div className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink-secondary/60">
@@ -401,13 +404,12 @@ export default function ActivarBoletaPage() {
               <button
                 type="submit"
                 disabled={!studentFound || alreadyActivated || submitting || telefono.length !== 10 || !!phoneError}
-                className={`w-full py-3.5 rounded-lg text-white font-heading text-[14px] font-bold shadow-[0_4px_12px_rgba(24,102,143,0.15)] flex items-center justify-center gap-2 transition-all select-none cursor-pointer active:scale-[0.98] ${
-                  !studentFound || alreadyActivated || telefono.length !== 10 || !!phoneError
-                    ? "bg-ink-secondary/40 text-white/70 shadow-none cursor-not-allowed"
-                    : submitting
+                className={`w-full py-3.5 rounded-lg text-white font-heading text-[14px] font-bold shadow-[0_4px_12px_rgba(24,102,143,0.15)] flex items-center justify-center gap-2 transition-all select-none cursor-pointer active:scale-[0.98] ${!studentFound || alreadyActivated || telefono.length !== 10 || !!phoneError
+                  ? "bg-ink-secondary/40 text-white/70 shadow-none cursor-not-allowed"
+                  : submitting
                     ? "bg-blue-primary opacity-80 cursor-wait"
                     : "bg-gradient-to-r from-blue-primary to-orange-energy hover:from-blue-hover hover:to-orange-energy hover:shadow-[0_6px_18px_rgba(245,165,29,0.25)]"
-                }`}
+                  }`}
               >
                 {submitting ? (
                   <>
@@ -445,28 +447,28 @@ export default function ActivarBoletaPage() {
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink-dark/65 backdrop-blur-[4px] animate-bg-in">
           <div className="bg-canvas border border-border-default rounded-2xl w-full max-w-sm p-6 text-center shadow-[0_20px_50px_rgba(0,0,0,0.3)] animate-scale-in flex flex-col items-center">
-            
+
             {/* Super premium verified checkmark icon container */}
             <div className="w-20 h-20 rounded-full flex items-center justify-center mb-5 bg-green-nature/10">
               <svg className="w-20 h-20" viewBox="0 0 52 52">
-                <circle 
+                <circle
                   className="check-circle"
-                  cx="26" 
-                  cy="26" 
-                  r="23" 
-                  fill="none" 
-                  stroke="#80BF1F" 
+                  cx="26"
+                  cy="26"
+                  r="23"
+                  fill="none"
+                  stroke="#80BF1F"
                   strokeWidth="3.5"
                   strokeLinecap="round"
                 />
-                <path 
+                <path
                   className="check-path"
-                  fill="none" 
-                  stroke="#80BF1F" 
-                  strokeWidth="4" 
+                  fill="none"
+                  stroke="#80BF1F"
+                  strokeWidth="4"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M16 26l8 8 16-16" 
+                  d="M16 26l8 8 16-16"
                 />
               </svg>
             </div>
@@ -475,7 +477,7 @@ export default function ActivarBoletaPage() {
             <h3 className="font-heading text-[22px] font-extrabold text-ink-dark tracking-tight leading-tight">
               ¡Registrado!
             </h3>
-            
+
             {/* Modal Subtitle */}
             <p className="font-sans text-[13.5px] text-ink-main mt-2 leading-relaxed px-1">
               Tu boleta ha sido vinculada exitosamente con tu número telefónico.
