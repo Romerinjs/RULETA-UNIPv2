@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Raleway, Roboto } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
 const raleway = Raleway({
@@ -29,7 +31,10 @@ export default function RootLayout({
       lang="es"
       className={`${raleway.variable} ${roboto.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <ToastContainer position="bottom-right" theme="light" />
+      </body>
     </html>
   );
 }
