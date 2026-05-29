@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { auth } from "@/auth";
 
 export async function POST(request: Request) {
   try {
-    // Aquí podrías validar un token/header ADMIN_SECRET_KEY
-    const authHeader = request.headers.get('authorization');
-    if (authHeader !== `Bearer ${process.env.ADMIN_SECRET_KEY}`) {
-      // return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-      // Comentado para facilitar pruebas, idealmente se habilita en prod
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
     const body = await request.json();

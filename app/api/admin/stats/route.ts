@@ -1,13 +1,16 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { auth } from "@/auth";
 
 // Route Segment Config para forzar dinámico o revalidación temporal
 export const revalidate = 3; // Revalidar cada 3 segundos, funciona como un mini-cache para no colapsar la DB.
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const authHeader = request.headers.get('authorization');
-    // if (authHeader !== `Bearer ${process.env.ADMIN_SECRET_KEY}`) { ... }
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
 
     const asistentesCount = await prisma.estudiante.count({
       where: { asistencia: true }

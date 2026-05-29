@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { auth } from "@/auth";
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
-    const authHeader = request.headers.get('authorization');
-    // if (authHeader !== `Bearer ${process.env.ADMIN_SECRET_KEY}`) { ... }
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
 
     // Paso 1: Consultamos los IDs de los candidatos elegibles
     // Usa el índice compuesto @@index([asistencia, ganador]) y revisa telefono !== null
