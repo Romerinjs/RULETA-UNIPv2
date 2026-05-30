@@ -16,21 +16,52 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Payload inválido. Se espera un array "estudiantes".' }, { status: 400 });
     }
 
-    // Validar que las boletas tengan 4 caracteres
-    for (const est of estudiantes) {
-      if (!est.boleta || est.boleta.length !== 4) {
-         return NextResponse.json({ error: `La boleta ${est.boleta} no es de 4 caracteres.` }, { status: 400 });
+    const validos = [];
+    const errores = [];
+
+    // Validar formato en memoria
+    for (let i = 0; i < estudiantes.length; i++) {
+      const est = estudiantes[i];
+      const fila = i + 1;
+
+      if (!est.nombre || !est.documento || !est.boleta || !est.programaId || !est.semestreId || !est.grupoId) {
+        errores.push({ fila, mensaje: "Faltan campos obligatorios" });
+        continue;
       }
+
+      if (String(est.boleta).length !== 4) {
+         errores.push({ fila, mensaje: `La boleta ${est.boleta} no es de 4 caracteres.` });
+         continue;
+      }
+
+      validos.push({
+        nombre: String(est.nombre),
+        documento: String(est.documento),
+        boleta: String(est.boleta),
+        telefono: est.telefono ? String(est.telefono) : null,
+        programaId: Number(est.programaId),
+        semestreId: Number(est.semestreId),
+        grupoId: Number(est.grupoId)
+      });
+    }
+
+    if (validos.length === 0) {
+      return NextResponse.json({ success: false, insertados: 0, errores });
     }
 
     const result = await prisma.estudiante.createMany({
-      data: estudiantes,
-      skipDuplicates: true, // Opcional: ignorar duplicados por si se corre 2 veces
+      data: validos,
+      skipDuplicates: true, // Ignorar duplicados por si se corre 2 veces
     });
 
-    return NextResponse.json({ success: true, count: result.count });
+    return NextResponse.json({ 
+      success: true, 
+      insertados: result.count, 
+      omitidos: validos.length - result.count,
+      errores 
+    });
   } catch (error) {
     console.error('Error en carga masiva:', error);
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
+    return NextResponse.json({ error: 'Error interno del servidor al insertar. Verifica las dependencias (programa, semestre, grupo).' }, { status: 500 });
   }
 }
