@@ -19,6 +19,21 @@ export async function GET(
         documento: true,
         telefono: true,
         asistencia: true,
+        programa: {
+          select: {
+            nombre: true,
+          },
+        },
+        semestre: {
+          select: {
+            numero: true,
+          },
+        },
+        grupo: {
+          select: {
+            nombre: true,
+          },
+        },
       }
     });
 
