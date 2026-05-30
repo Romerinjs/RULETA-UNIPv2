@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import CsvUpload from "./csv-upload";
 import StudentList from "./student-list";
 
@@ -25,9 +26,12 @@ export default function DashboardClient() {
          <p className="font-sans text-[14px] text-ink-main mb-6 flex-grow">
            Inicia el sorteo en vivo en pantalla gigante. Se seleccionará aleatoriamente un ganador entre los estudiantes que marcaron asistencia.
          </p>
-         <button className="w-full flex justify-center py-[10px] px-[24px] rounded-lg text-white font-sans text-[14px] font-semibold bg-gradient-to-br from-blue-primary to-orange-energy shadow-[0_4px_12px_rgba(24,102,143,0.2)] hover:opacity-90 transition-opacity mt-auto">
+         <Link 
+           href="/admin/ruleta" 
+           className="w-full flex justify-center py-[10px] px-[24px] rounded-lg text-white font-sans text-[14px] font-semibold bg-gradient-to-br from-blue-primary to-orange-energy shadow-[0_4px_12px_rgba(24,102,143,0.2)] hover:opacity-90 transition-opacity mt-auto text-center"
+         >
            Abrir Pantalla de Ruleta
-         </button>
+         </Link>
       </div>
 
       <StudentList refreshTrigger={refreshTrigger} />
